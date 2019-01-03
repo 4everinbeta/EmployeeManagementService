@@ -1,4 +1,9 @@
+############################
+# SERVER ###################
+############################
 server:
+#  servlet:
+#    context-path: /employees
   error:
     whitelabel:
       enabled: false

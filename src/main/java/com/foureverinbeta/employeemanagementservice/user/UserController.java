@@ -1,13 +1,16 @@
 package com.foureverinbeta.employeemanagementservice.user;
 
+import io.swagger.annotations.Api;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/users")
+@Api(value = "Users", tags = "Users")
 public class UserController {
 
     private ApplicationUserRepository applicationUserRepository;

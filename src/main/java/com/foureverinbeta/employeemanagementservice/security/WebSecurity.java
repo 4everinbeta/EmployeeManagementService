@@ -13,7 +13,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.context.annotation.Bean;
 
-import static com.foureverinbeta.employeemanagementservice.security.SecurityConstants.SIGN_UP_URL;
+import static com.foureverinbeta.employeemanagementservice.security.SecurityConstants.*;
 
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
@@ -29,6 +29,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+                .antMatchers(HttpMethod.GET, SWAGGER_URL).permitAll()
+                .antMatchers(HttpMethod.GET, SWAGGER_API_DOCS).permitAll()
+                .antMatchers(HttpMethod.GET, SWAGGER_RESOURCES).permitAll()
+                .antMatchers(HttpMethod.GET, WEBJARS).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
