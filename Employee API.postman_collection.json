@@ -1,0 +1,274 @@
+{
+	"info": {
+		"_postman_id": "fad9dd03-0936-4260-a5bd-8419aebddc7f",
+		"name": "Employee API",
+		"description": "Simple PostMan Collection for testing the Employee Management API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"apiuser\",\n    \"password\": \"password\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/sign-up",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"sign-up"
+					]
+				},
+				"description": "Create a user in the IDP"
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "784b2566-ecaa-4de7-94b5-fcffd33645a5",
+						"type": "text/javascript",
+						"exec": [
+							"postman.setGlobalVariable(\"auth_token\",postman.getResponseHeader(\"Authorization\") );"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"apiuser\",\n    \"password\": \"password\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Employees",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3fb6c777-46e5-4ccf-a191-cd5cc2c6eaac",
+						"type": "text/javascript",
+						"exec": [
+							"var data = JSON.parse(responseBody);   ",
+							"postman.setGlobalVariable(\"employeeid\", data[0].Id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/employees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee By Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/employees/{{employeeid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"employees",
+						"{{employeeid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1add03c0-199f-494e-98f3-05fb772e9613",
+						"type": "text/javascript",
+						"exec": [
+							"postman.setGlobalVariable(\"new_employee\",postman.getResponseHeader(\"Location\") );"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"firstName\": \"Bruce\",\n\"middleInitial\": \"R\",\n\"lastName\": \"Springsteen\",\n\"dateOfBirth\": \"1950-09-29\",\n\"dateOfEmployment\": \"2016-12-05\",\n\"status\": \"ACTIVE\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/employees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get New Employee",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{new_employee}}",
+					"host": [
+						"{{new_employee}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update New Emoployee",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"firstName\": \"Bruce\",\n\"middleInitial\": \"R\",\n\"lastName\": \"Springsteen -- UPDATED\",\n\"dateOfBirth\": \"1949-09-23\",\n\"dateOfEmployment\": \"2016-12-05\",\n\"status\": \"ACTIVE\"\n}"
+				},
+				"url": {
+					"raw": "{{new_employee}}",
+					"host": [
+						"{{new_employee}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete new employee",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{auth_token}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{new_employee}}",
+					"host": [
+						"{{new_employee}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
